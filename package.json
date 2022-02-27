@@ -1,0 +1,40 @@
+{
+  "name": "harvest-api",
+  "version": "0.1.0",
+  "description": "",
+  "scripts": {
+    "start": "node lib",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "lint:staged": "lint-staged"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Erriy/harvest-api.git"
+  },
+  "author": "erriy <erriy@msn.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Erriy/harvest-api/issues"
+  },
+  "homepage": "https://github.com/Erriy/harvest-api#readme",
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.28.0",
+    "lint-staged": "^12.3.4",
+    "prettier": "^2.5.1",
+    "yorkie": "^2.0.0"
+  },
+  "gitHooks": {
+    "pre-commit": "npm run lint:staged"
+  },
+  "lint-staged": {
+    "*.js": "eslint --fix",
+    "*.{css,json,md}": "prettier --write"
+  },
+  "dependencies": {
+    "express": "^4.17.3",
+    "express-async-errors": "^3.1.1",
+    "winston": "^3.6.0"
+  }
+}

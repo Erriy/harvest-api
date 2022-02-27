@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+
+    mysql:
+        image: mysql/mysql-server:8.0.28
+        environment:
+            - MYSQL_ROOT_PASSWORD=123456
+        volumes:
+            - ./sql/docker_init.sql:/docker-entrypoint-initdb.d/01.sql
+        ports:
+            - 127.0.0.1:3306:3306
+
+    app:
+        build:
+            context: .
+            dockerfile: dockerfile
+        command: npm start
+        depends_on:
+            - mysql
+        environment:
+            - PORT=80
+        ports:
+            - 80:80
+

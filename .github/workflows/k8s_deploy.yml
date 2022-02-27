@@ -1,0 +1,30 @@
+name: k8s_deploy
+
+on: workflow_dispatch
+
+env:
+  IMAGE: erriy/harvest-api
+  TAG: ${{ github.sha }}
+  ACTOR: ${{ github.actor }}
+  KUBECTL_VERSION: v1.22.7
+  CONFIG: k8s/app.yml
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: change image and print config
+      run: |
+        sed -i 's#DOCKER_IMAGE#${{ env.IMAGE }}:${{ env.TAG }}#g' ${{ env.CONFIG }}
+        cat ${{ env.CONFIG }}
+
+    - name: deploy
+      uses: steebchen/kubectl@v2.0.0
+      with:
+        config: ${{ secrets.KUBE_CONFIG_DATA }}
+        version: ${{ env.KUBECTL_VERSION }}
+        command: apply -f ${{ env.CONFIG }}
