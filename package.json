@@ -33,8 +33,10 @@
     "*.{css,json,md}": "prettier --write"
   },
   "dependencies": {
+    "deep-sort-object": "^1.0.2",
     "express": "^4.17.3",
     "express-async-errors": "^3.1.1",
+    "mysql": "^2.18.1",
     "winston": "^3.6.0"
   }
 }
