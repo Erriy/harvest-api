@@ -27,6 +27,7 @@ services:
             - MONGO_DB=test
             - REDIS_HOST=redis
             - REDIS_PORT=6379
+            - INVITE_CODE=52ba0369-810f-4694-8344-3df386363250
         ports:
             - 80:80
 
