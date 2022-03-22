@@ -57,28 +57,51 @@ spec:
         env:
         - name: PORT
           value: '80'
-        - name: MYSQL_HOST
+        - name: MONGO_USER
           valueFrom:
             configMapKeyRef:
-              name: mysql-8-test-config
+              name: mongo-config
+              key: test.user
+        - name: MONGO_PASS
+          valueFrom:
+            configMapKeyRef:
+              name: mongo-config
+              key: test.pwd
+        - name: MONGO_DB
+          valueFrom:
+            configMapKeyRef:
+              name: mongo-config
+              key: test.db
+        - name: MONGO_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: mongo-config
               key: host
-        - name: MYSQL_PORT
+        - name: MONGO_PORT
           valueFrom:
             configMapKeyRef:
-              name: mysql-8-test-config
+              name: mongo-config
               key: port
-        - name: MYSQL_USER
+        - name: INVITE_CODE
           valueFrom:
             configMapKeyRef:
-              name: mysql-8-test-config
-              key: user
-        - name: MYSQL_PASSWORD
+              name: harvest-config
+              key: test.invite_code
+        - name: REDIS_HOST
           valueFrom:
             configMapKeyRef:
-              name: mysql-8-test-config
-              key: password
-        - name: MYSQL_DATABASE
-          value: harvest
+              name: redis-config
+              key: host
+        - name: REDIS_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: redis-config
+              key: port
+        - name: REDIS_DB
+          valueFrom:
+            configMapKeyRef:
+              name: redis-config
+              key: test.db
         resources:
           limits:
             cpu: 250m
