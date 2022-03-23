@@ -28,8 +28,8 @@ jobs:
 
     - name: Build and push image to Docker Hub
       run: |
-        docker build -t "$IMAGE:$TAG" .
-        docker push "$IMAGE:$TAG"
+        docker build -t "$IMAGE:$TAG" -t "$IMAGE:latest" .
+        docker push "$IMAGE" --all-tags
 
     - name: change image and print config
       run: |
