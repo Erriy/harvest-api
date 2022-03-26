@@ -23,6 +23,7 @@
   "source": "chrome.history",
   // 标签，中括号表示与标签的关系，花括号表示标签的唯一区别id，
   // 比如两个人物是朋友关系，可以在两个人中间打上"朋友{xxxx}"，双方就可以通过这个标签找到对方，而不会与"朋友{yyyy}"混淆
-  "tags": ["xxx", "yyy", "zzz[detail]{uniq_id}"]
+  "tags": ["xxx", "yyy", "zzz[detail]{uniq_id}"],
+  "history": []
 }
 ```
