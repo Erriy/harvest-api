@@ -33,7 +33,6 @@
     "*.{css,json,md}": "prettier --write"
   },
   "dependencies": {
-    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "deep-sort-object": "^1.0.2",
     "express": "^4.17.3",
