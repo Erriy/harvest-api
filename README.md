@@ -12,7 +12,7 @@
   "time": {
     // 单位：毫秒
     "happen": {
-      "value": 111111,
+      "timestamp": 111111,
       "accuracy": "second"
     }, // 事件发生时间
     // "start": 111111, // 开始时间
