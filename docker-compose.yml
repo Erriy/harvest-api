@@ -29,7 +29,7 @@ services:
             - PORT=80
             - MONGO_HOST=mongo
             - MONGO_PORT=27017
-            - MONGO_DB=test
+            - MONGO_DB=testdb
             - MONGO_USER=test
             - MONGO_PASS=test
             - REDIS_HOST=redis
