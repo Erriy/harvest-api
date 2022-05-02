@@ -1,26 +1,27 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: harvest-api
+  name: harvest-api-test
   annotations:
     kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   rules:
-  - host: harvest-api.on1y.net
+  - host: harvest-test.on1y.net
     http:
       paths:
-      - path: /
+      - path: /api(/|$)(.*)
         pathType: Prefix
         backend:
           service:
-            name: harvest-api
+            name: harvest-api-test
             port:
               number: 80
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: harvest-api
+  name: harvest-api-test
 spec:
   ports:
     - name: http
@@ -28,19 +29,19 @@ spec:
       protocol: TCP
       targetPort: 80
   selector:
-    app: harvest-api
+    app: harvest-api-test
   sessionAffinity: ClientIP
   type: ClusterIP
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: harvest-api
+  name: harvest-api-test
 spec:
-  replicas: 4
+  replicas: 1
   selector:
     matchLabels:
-      app: harvest-api
+      app: harvest-api-test
   strategy:
     rollingUpdate:
       maxSurge: 75%
@@ -49,40 +50,63 @@ spec:
   template:
     metadata:
       labels:
-        app: harvest-api
+        app: harvest-api-test
     spec:
       containers:
-      - name: harvest-api
-        image: DOCKER_IMAGE
+      - name: harvest-api-test
+        image: erriy/harvest-api:latest
         env:
         - name: PORT
           value: '80'
-        - name: MYSQL_HOST
+        - name: MONGO_USER
           valueFrom:
             configMapKeyRef:
-              name: mysql-8-config
-              key: host
-        - name: MYSQL_PORT
-          valueFrom:
-            configMapKeyRef:
-              name: mysql-8-config
-              key: port
-        - name: MYSQL_USER
-          valueFrom:
-            configMapKeyRef:
-              name: mysql-8-config
+              name: mongo-test-config
               key: user
-        - name: MYSQL_PASSWORD
+        - name: MONGO_PASS
           valueFrom:
             configMapKeyRef:
-              name: mysql-8-config
-              key: password
-        - name: MYSQL_DATABASE
-          value: harvest
+              name: mongo-test-config
+              key: pwd
+        - name: MONGO_DB
+          valueFrom:
+            configMapKeyRef:
+              name: mongo-test-config
+              key: db
+        - name: MONGO_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: mongo-test-config
+              key: host
+        - name: MONGO_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: mongo-test-config
+              key: port
+        - name: INVITE_CODE
+          valueFrom:
+            configMapKeyRef:
+              name: harvest-config
+              key: test.invite_code
+        - name: REDIS_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: redis-config
+              key: host
+        - name: REDIS_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: redis-config
+              key: port
+        - name: REDIS_DB
+          valueFrom:
+            configMapKeyRef:
+              name: redis-config
+              key: test.db
         resources:
           limits:
-            cpu: 250m
-            memory: 200Mi
+            cpu: 100m
+            memory: 100Mi
           requests:
             cpu: 100m
             memory: 100Mi

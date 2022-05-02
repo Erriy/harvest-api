@@ -1,27 +1,26 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: harvest-api-test
+  name: harvest-api
   annotations:
     kubernetes.io/ingress.class: "nginx"
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   rules:
-  - host: harvest-test.on1y.net
+  - host: harvest-api.on1y.net
     http:
       paths:
-      - path: /api(/|$)(.*)
+      - path: /
         pathType: Prefix
         backend:
           service:
-            name: harvest-api-test
+            name: harvest-api
             port:
               number: 80
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: harvest-api-test
+  name: harvest-api
 spec:
   ports:
     - name: http
@@ -29,19 +28,19 @@ spec:
       protocol: TCP
       targetPort: 80
   selector:
-    app: harvest-api-test
+    app: harvest-api
   sessionAffinity: ClientIP
   type: ClusterIP
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: harvest-api-test
+  name: harvest-api
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: harvest-api-test
+      app: harvest-api
   strategy:
     rollingUpdate:
       maxSurge: 75%
@@ -50,11 +49,11 @@ spec:
   template:
     metadata:
       labels:
-        app: harvest-api-test
+        app: harvest-api
     spec:
       containers:
-      - name: harvest-api-test
-        image: DOCKER_IMAGE
+      - name: harvest-api
+        image: erriy/harvest-api:latest
         env:
         - name: PORT
           value: '80'
@@ -62,17 +61,17 @@ spec:
           valueFrom:
             configMapKeyRef:
               name: mongo-config
-              key: test.user
+              key: user
         - name: MONGO_PASS
           valueFrom:
             configMapKeyRef:
               name: mongo-config
-              key: test.pwd
+              key: pwd
         - name: MONGO_DB
           valueFrom:
             configMapKeyRef:
               name: mongo-config
-              key: test.db
+              key: db
         - name: MONGO_HOST
           valueFrom:
             configMapKeyRef:
@@ -87,7 +86,7 @@ spec:
           valueFrom:
             configMapKeyRef:
               name: harvest-config
-              key: test.invite_code
+              key: prod.invite_code
         - name: REDIS_HOST
           valueFrom:
             configMapKeyRef:
@@ -102,11 +101,11 @@ spec:
           valueFrom:
             configMapKeyRef:
               name: redis-config
-              key: test.db
+              key: prod.db
         resources:
           limits:
-            cpu: 250m
-            memory: 200Mi
+            cpu: 100m
+            memory: 100Mi
           requests:
             cpu: 100m
             memory: 100Mi

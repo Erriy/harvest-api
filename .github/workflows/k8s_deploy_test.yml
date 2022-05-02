@@ -10,7 +10,7 @@ env:
   TAG: ${{ github.sha }}
   ACTOR: ${{ github.actor }}
   KUBECTL_VERSION: v1.22.7
-  CONFIG: k8s/test.yml
+  CONFIG: conf/k8s/test.yml
 
 jobs:
   build:
@@ -33,7 +33,7 @@ jobs:
 
     - name: change image and print config
       run: |
-        sed -i 's#DOCKER_IMAGE#${{ env.IMAGE }}:${{ env.TAG }}#g' ${{ env.CONFIG }}
+        sed -i 's#erriy/harvest-api:latest#${{ env.IMAGE }}:${{ env.TAG }}#g' ${{ env.CONFIG }}
         cat ${{ env.CONFIG }}
 
     - name: deploy
